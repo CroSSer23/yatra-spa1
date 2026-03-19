@@ -9,7 +9,12 @@ interface HeroMobileProps {
   locations: Location[];
 }
 
-const CARD_HEIGHT = "88vh";
+// Card is 82vw wide → 9vw peeks on each side
+// Step per card = 82vw + 12px gap
+// Initial offset = 9vw (centers first card)
+const CARD_VW = 82;
+const GAP_PX = 12;
+const PEEK_VW = (100 - CARD_VW) / 2; // 9vw
 
 export default function HeroMobile({ locations }: HeroMobileProps) {
   const [active, setActive] = useState(0);
@@ -32,22 +37,25 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
     delta: 10,
   });
 
+  // translateX = peek offset - (active card index × card step)
+  const trackTranslate = `calc(${PEEK_VW}vw - ${active} * (${CARD_VW}vw + ${GAP_PX}px))`;
+
   return (
-    <section className="flex md:hidden flex-col w-full bg-black select-none">
-      {/* Carousel viewport — explicit height so next/image fill works */}
+    <section className="flex md:hidden flex-col w-full bg-black select-none pt-8 pb-4 min-h-screen justify-center">
+      {/* Carousel viewport */}
       <div
         {...handlers}
-        className="relative w-full overflow-hidden"
-        style={{ height: CARD_HEIGHT }}
+        className="w-full overflow-hidden"
+        style={{ height: "76vh" }}
       >
         {/* Sliding track */}
         <div
           className={isDragging ? "" : "transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"}
           style={{
             display: "flex",
-            height: CARD_HEIGHT,
-            width: `${locations.length * 100}vw`,
-            transform: `translateX(-${active * 100}vw)`,
+            gap: `${GAP_PX}px`,
+            height: "76vh",
+            transform: `translateX(${trackTranslate})`,
             willChange: "transform",
           }}
         >
@@ -56,7 +64,19 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
             return (
               <div
                 key={location.id}
-                style={{ position: "relative", width: "100vw", height: CARD_HEIGHT, flexShrink: 0 }}
+                onClick={() => !isActive && goTo(index)}
+                style={{
+                  position: "relative",
+                  width: `${CARD_VW}vw`,
+                  height: "76vh",
+                  flexShrink: 0,
+                  borderRadius: "24px",
+                  overflow: "hidden",
+                  cursor: isActive ? "default" : "pointer",
+                  transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.5s ease",
+                  transform: isActive ? "scale(1)" : "scale(0.95)",
+                  filter: isActive ? "brightness(1)" : "brightness(0.55)",
+                }}
               >
                 {/* Spa image */}
                 <Image
@@ -64,47 +84,85 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
                   alt={`${location.name} — YĀTRĀ SPA`}
                   fill
                   priority={index === 0}
-                  className={`object-cover object-center transition-all duration-700 ${
-                    isActive ? "scale-100 brightness-100" : "scale-105 brightness-75"
-                  }`}
-                  sizes="100vw"
-                  unoptimized={false}
+                  className="object-cover object-center"
+                  sizes="82vw"
                 />
 
                 {/* Bottom-heavy gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/20 to-black/80" />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.18) 45%, rgba(0,0,0,0.78) 100%)",
+                  }}
+                />
 
-                {/* Content — bottom quarter */}
-                <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 px-8 text-center">
+                {/* Content — bottom section */}
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    paddingBottom: "40px",
+                    paddingLeft: "24px",
+                    paddingRight: "24px",
+                    textAlign: "center",
+                  }}
+                >
                   {/* Brand name */}
-                  <div className="flex flex-col items-center gap-1 mb-3">
-                    <p className="font-cormorant text-white uppercase tracking-[0.3em] text-[42px] leading-none font-light">
-                      YĀTRĀ
-                    </p>
-                    <p className="font-cormorant text-white uppercase tracking-[0.6em] text-[15px] leading-none font-light">
-                      SPA
-                    </p>
-                  </div>
+                  <p className="font-cormorant text-white uppercase font-light leading-none"
+                     style={{ fontSize: "38px", letterSpacing: "0.25em" }}>
+                    YĀTRĀ
+                  </p>
+                  <p className="font-cormorant text-white uppercase font-light leading-none mt-1"
+                     style={{ fontSize: "13px", letterSpacing: "0.55em" }}>
+                    SPA
+                  </p>
 
                   {/* Gold rule */}
-                  <div className="w-8 h-px bg-[#C9A84C]/70 mb-4" />
+                  <div style={{ width: "28px", height: "1px", background: "rgba(201,168,76,0.75)", margin: "14px 0" }} />
 
                   {/* Location */}
-                  <p className="font-inter text-white/70 font-light text-[11px] tracking-[0.28em] uppercase mb-7">
-                    {location.name.toUpperCase()}
+                  <p className="font-inter text-white/70 font-light uppercase"
+                     style={{ fontSize: "10px", letterSpacing: "0.26em", marginBottom: "24px" }}>
+                    {location.name}
                   </p>
 
                   {/* Buttons */}
-                  <div className="flex gap-3">
+                  <div style={{ display: "flex", gap: "10px" }}>
                     <a
                       href={location.bookUrl}
-                      className="px-7 py-2.5 rounded-xl text-[13px] font-medium font-inter bg-[#C9A84C] text-black/90 hover:bg-[#debb63] active:bg-[#debb63] transition-all duration-300 whitespace-nowrap tracking-wide"
+                      className="font-inter font-medium"
+                      style={{
+                        padding: "10px 24px",
+                        borderRadius: "12px",
+                        fontSize: "13px",
+                        letterSpacing: "0.05em",
+                        background: "#C9A84C",
+                        color: "rgba(0,0,0,0.88)",
+                        whiteSpace: "nowrap",
+                        textDecoration: "none",
+                      }}
                     >
                       Book Now
                     </a>
                     <a
                       href={location.contactUrl}
-                      className="px-7 py-2.5 rounded-xl text-[13px] font-medium font-inter border border-white/60 text-white/90 hover:bg-white hover:text-black active:bg-white active:text-black transition-all duration-300 whitespace-nowrap tracking-wide"
+                      className="font-inter font-medium"
+                      style={{
+                        padding: "10px 24px",
+                        borderRadius: "12px",
+                        fontSize: "13px",
+                        letterSpacing: "0.05em",
+                        border: "1px solid rgba(255,255,255,0.55)",
+                        color: "rgba(255,255,255,0.9)",
+                        whiteSpace: "nowrap",
+                        textDecoration: "none",
+                      }}
                     >
                       Contact Us
                     </a>
@@ -117,17 +175,22 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
       </div>
 
       {/* Dot indicators */}
-      <div className="flex items-center justify-center gap-2.5 py-5 bg-black">
+      <div className="flex items-center justify-center gap-2.5 mt-6">
         {locations.map((_, index) => (
           <button
             key={index}
             onClick={() => goTo(index)}
             aria-label={locations[index].name}
-            className={`rounded-full transition-all duration-300 ${
-              index === active
-                ? "bg-[#C9A84C] w-5 h-2"
-                : "bg-white/25 w-2 h-2 hover:bg-white/40"
-            }`}
+            style={{
+              borderRadius: "999px",
+              transition: "all 0.3s ease",
+              background: index === active ? "#C9A84C" : "rgba(255,255,255,0.25)",
+              width: index === active ? "20px" : "8px",
+              height: "8px",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+            }}
           />
         ))}
       </div>
