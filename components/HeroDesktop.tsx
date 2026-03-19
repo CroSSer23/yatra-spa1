@@ -41,7 +41,7 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
               className="object-cover object-center" sizes="100vw" aria-hidden />
             <div style={{
               position: "absolute", inset: 0,
-              backdropFilter: "blur(44px)", WebkitBackdropFilter: "blur(44px)",
+              backdropFilter: "blur(22px)", WebkitBackdropFilter: "blur(22px)",
               background: BG_OVERLAY,
             }} />
           </div>

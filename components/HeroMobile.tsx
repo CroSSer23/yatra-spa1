@@ -40,7 +40,7 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
               className="object-cover object-center" sizes="100vw" aria-hidden />
             <div style={{
               position: "absolute", inset: 0,
-              backdropFilter: "blur(32px)", WebkitBackdropFilter: "blur(32px)",
+              backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)",
               background: BG_OVERLAY,
             }} />
           </div>
