@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Gotu, Nunito } from "next/font/google";
 import "./globals.css";
 
-// Distinctive display serif — luxury character
-const cormorant = Cormorant_Garamond({
+// YĀTRĀ Brand Book — Primary: Gotu (echoes the organic Ayurvedic aesthetic of the logo)
+const gotu = Gotu({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-cormorant",
+  weight: "400",
+  variable: "--font-gotu",
   display: "swap",
 });
 
-// Refined geometric sans — clean, contemporary, not generic
-const jost = Jost({
+// YĀTRĀ Brand Book — Secondary: Avenir equivalent → Nunito (geometric, humanist sans)
+const nunito = Nunito({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-inter",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
-      <body className="antialiased bg-black grain">{children}</body>
+    <html lang="en" className={`${gotu.variable} ${nunito.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

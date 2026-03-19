@@ -2,12 +2,16 @@
 
 import Image from "next/image";
 import { Location } from "@/data/locations";
-import { GOLD, getCarouselTransform } from "@/lib/carousel";
+import { TERRA, BEIGE, CREAM, getCarouselTransform } from "@/lib/carousel";
 import { useCarousel } from "@/hooks/useCarousel";
 
-const CARD_W = 38;  // vw
-const STEP   = 40;  // vw
+const CARD_W   = 38;  // vw
+const STEP     = 40;  // vw
 const LOGO_URL = "https://images.giftpro.co.uk/original/750x200/76c02d79-54e2-4e2a-a61c-9ae2b4ff49ae.png";
+
+// Brand Book: deep blue overlay instead of pure black
+const BG_OVERLAY = "rgba(50,67,84,0.62)";
+const CARD_GRAD  = "linear-gradient(to bottom, rgba(50,67,84,0.0) 0%, rgba(50,67,84,0.18) 45%, rgba(30,41,52,0.92) 100%)";
 
 export default function HeroDesktop({ locations }: { locations: Location[] }) {
   const { active, isDragging, goTo, handlers } = useCarousel(locations.length);
@@ -16,27 +20,29 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
     <section
       {...handlers}
       className="hidden md:flex flex-col w-full relative overflow-hidden select-none"
-      style={{ height: "100svh", paddingTop: "32px", paddingBottom: "24px", cursor: isDragging ? "grabbing" : "grab", userSelect: "none" }}
+      style={{
+        height: "100svh",
+        paddingTop: "32px",
+        paddingBottom: "24px",
+        cursor: isDragging ? "grabbing" : "grab",
+        userSelect: "none",
+      }}
     >
-      {/* Blurred background — only render active + adjacent to limit GPU work */}
+      {/* Blurred brand-tinted background */}
       {locations.map((location, index) => {
-        const dist = Math.abs(index - active);
-        if (dist > 1) return null;
+        if (Math.abs(index - active) > 1) return null;
         return (
-          <div
-            key={location.id}
-            style={{
-              position: "absolute", inset: 0, zIndex: 0,
-              transition: "opacity 0.7s ease",
-              opacity: index === active ? 1 : 0,
-            }}
-          >
+          <div key={location.id} style={{
+            position: "absolute", inset: 0, zIndex: 0,
+            transition: "opacity 0.7s ease",
+            opacity: index === active ? 1 : 0,
+          }}>
             <Image src={location.imageUrl} alt="" fill priority={index === 1}
               className="object-cover object-center" sizes="100vw" aria-hidden />
             <div style={{
               position: "absolute", inset: 0,
-              backdropFilter: "blur(40px)", WebkitBackdropFilter: "blur(40px)",
-              background: "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(44px)", WebkitBackdropFilter: "blur(44px)",
+              background: BG_OVERLAY,
             }} />
           </div>
         );
@@ -48,12 +54,10 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
           style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
       </div>
 
-      {/* Carousel — flex:1 fills remaining height so dots always stay in view */}
-      <div
-        style={{ position: "relative", zIndex: 10, width: "100%", flex: 1, overflow: "hidden" }}
-      >
+      {/* Carousel */}
+      <div style={{ position: "relative", zIndex: 10, width: "100%", flex: 1, overflow: "hidden" }}>
         {locations.map((location, index) => {
-          const offset = index - active;
+          const offset   = index - active;
           const isCenter = offset === 0;
           const isVisible = Math.abs(offset) <= 1;
 
@@ -71,29 +75,71 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                 pointerEvents: isVisible ? "auto" : "none",
                 transition: isDragging ? "none" : "transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, filter 0.4s ease",
                 transform: getCarouselTransform(offset, STEP),
-                filter: isCenter ? "brightness(1)" : "brightness(0.45)",
+                filter: isCenter ? "brightness(1)" : "brightness(0.4)",
                 willChange: isVisible ? "transform" : "auto",
               }}
             >
               <Image src={location.imageUrl} alt={`${location.name} — YĀTRĀ SPA`}
-                fill priority={index === 1} className="object-cover object-center pointer-events-none" sizes="38vw" draggable={false} />
+                fill priority={index === 1} className="object-cover object-center pointer-events-none"
+                sizes="38vw" draggable={false} />
 
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.82) 100%)" }} />
+              {/* Brand-tinted gradient overlay */}
+              <div style={{ position: "absolute", inset: 0, background: CARD_GRAD }} />
 
-              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", paddingBottom: "44px", paddingLeft: "24px", paddingRight: "24px", textAlign: "center" }}>
-                <p className="font-cormorant text-white uppercase font-light" style={{ fontSize: "32px", letterSpacing: "0.28em", lineHeight: 1 }}>YĀTRĀ</p>
-                <p className="font-cormorant text-white uppercase font-light" style={{ fontSize: "11px", letterSpacing: "0.6em", lineHeight: 1, marginTop: "5px" }}>SPA</p>
-                <div style={{ width: "28px", height: "1px", background: `${GOLD}BF`, margin: "14px 0" }} />
-                <p className="font-inter text-white/65 font-light uppercase" style={{ fontSize: "11px", letterSpacing: "0.26em", marginBottom: "24px" }}>{location.name}</p>
+              {/* Card content */}
+              <div style={{
+                position: "absolute", inset: 0,
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "flex-end",
+                paddingBottom: "44px", paddingLeft: "24px", paddingRight: "24px",
+                textAlign: "center",
+              }}>
+                {/* YĀTRĀ wordmark on card */}
+                <p className="font-gotu text-white uppercase"
+                  style={{ fontSize: "30px", letterSpacing: "0.3em", lineHeight: 1 }}>
+                  YĀTRĀ
+                </p>
+                {/* Spa type per Brand Book: "URBAN SPA" or "SIGNATURE SPA" */}
+                <p className="font-nunito text-white/70 uppercase"
+                  style={{ fontSize: "10px", letterSpacing: "0.55em", lineHeight: 1, marginTop: "6px", fontWeight: 300 }}>
+                  {location.spaType}
+                </p>
+
+                {/* Brand beige divider */}
+                <div style={{ width: "28px", height: "1px", background: BEIGE, margin: "14px 0", opacity: 0.75 }} />
+
+                {/* Location name */}
+                <p className="font-nunito text-white/75 uppercase"
+                  style={{ fontSize: "11px", letterSpacing: "0.28em", marginBottom: "26px", fontWeight: 300 }}>
+                  {location.name}
+                </p>
+
                 <div style={{ display: "flex", gap: "12px" }}>
-                  <a href={location.bookUrl} className="font-inter font-medium"
-                    style={{ padding: "10px 26px", borderRadius: "12px", fontSize: "13px", letterSpacing: "0.04em", background: GOLD, color: "rgba(0,0,0,0.88)", whiteSpace: "nowrap", textDecoration: "none" }}>
+                  {/* Book Now — Brand Book terracotta accent */}
+                  <a href={location.bookUrl} className="font-nunito"
+                    style={{
+                      padding: "10px 26px", borderRadius: "10px",
+                      fontSize: "12px", letterSpacing: "0.1em", fontWeight: 500,
+                      background: TERRA, color: "#EFF0F1",
+                      whiteSpace: "nowrap", textDecoration: "none",
+                      textTransform: "uppercase",
+                    }}>
                     Book Now
                   </a>
-                  <a href="#locations" className="font-inter font-medium"
-                    style={{ padding: "10px 26px", borderRadius: "12px", fontSize: "13px", letterSpacing: "0.04em", border: "1px solid rgba(255,255,255,0.5)", color: "rgba(255,255,255,0.88)", whiteSpace: "nowrap", textDecoration: "none" }}>
+                  {/* Contact Us — ghost */}
+                  <button
+                    onClick={() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" })}
+                    className="font-nunito"
+                    style={{
+                      padding: "10px 26px", borderRadius: "10px",
+                      fontSize: "12px", letterSpacing: "0.1em", fontWeight: 500,
+                      border: `1px solid rgba(225,225,223,0.55)`,
+                      color: "#EFF0F1", whiteSpace: "nowrap",
+                      background: "transparent", cursor: "pointer",
+                      textTransform: "uppercase",
+                    }}>
                     Contact Us
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -101,18 +147,23 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
         })}
       </div>
 
-      {/* Dots */}
+      {/* Dots — brand blue active */}
       <div style={{ position: "relative", zIndex: 10, display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", marginTop: "20px", flexShrink: 0 }}>
         {locations.map((loc, index) => (
           <button key={index} onClick={() => goTo(index)} aria-label={loc.name}
-            style={{ borderRadius: "999px", border: "none", cursor: "pointer", padding: 0, transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)", background: index === active ? GOLD : "rgba(255,255,255,0.3)", width: index === active ? "22px" : "8px", height: "8px" }} />
+            style={{
+              borderRadius: "999px", border: "none", cursor: "pointer", padding: 0,
+              transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
+              background: index === active ? BEIGE : "rgba(209,199,191,0.3)",
+              width: index === active ? "22px" : "8px", height: "8px",
+            }} />
         ))}
       </div>
 
-      {/* Bottom fade — blends hero into About section (#0d0d0d) */}
+      {/* Bottom fade → About section */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, height: "140px", zIndex: 20,
-        background: "linear-gradient(to bottom, transparent 0%, #0d0d0d 100%)",
+        background: `linear-gradient(to bottom, transparent 0%, ${CREAM} 100%)`,
         pointerEvents: "none",
       }} />
     </section>
