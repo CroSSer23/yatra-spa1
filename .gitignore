@@ -23,6 +23,9 @@
 .agents
 .agent
 
+# brand assets — large files, do not commit
+*.pdf
+
 
 # debug
 npm-debug.log*
