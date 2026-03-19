@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Location } from "@/data/locations";
 import LocationCard from "./LocationCard";
 
@@ -9,20 +8,6 @@ interface HeroDesktopProps {
 export default function HeroDesktop({ locations }: HeroDesktopProps) {
   return (
     <section className="hidden md:flex w-full h-screen relative overflow-hidden">
-      {/* Floating logo — absolute, overlaps all 3 panels */}
-      <div className="logo-reveal absolute top-6 left-1/2 z-50">
-        <div className="bg-white/92 backdrop-blur-sm border border-stone-200/80 shadow-[0_4px_32px_rgba(0,0,0,0.12)] rounded-2xl px-6 py-3">
-          <Image
-            src="https://images.giftpro.co.uk/original/750x200/76c02d79-54e2-4e2a-a61c-9ae2b4ff49ae.png"
-            alt="YĀTRĀ SPA"
-            width={180}
-            height={48}
-            priority
-            className="object-contain"
-          />
-        </div>
-      </div>
-
       {/* Thin vertical dividers */}
       <div className="absolute top-0 bottom-0 left-1/3 w-px bg-white/8 z-10 pointer-events-none" />
       <div className="absolute top-0 bottom-0 left-2/3 w-px bg-white/8 z-10 pointer-events-none" />

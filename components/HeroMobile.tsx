@@ -9,15 +9,22 @@ interface HeroMobileProps {
   locations: Location[];
 }
 
-// Card is 82vw wide → 9vw peeks on each side
-// Step per card = 82vw + 12px gap
-// Initial offset = 9vw (centers first card)
-const CARD_VW = 82;
-const GAP_PX = 12;
-const PEEK_VW = (100 - CARD_VW) / 2; // 9vw
+// Layout constants
+const CARD_W = 72;   // vw — card width
+const STEP = 54;     // vw — horizontal distance between card centres
+const CARD_H = "76vh";
+
+function getTransform(offset: number) {
+  // Each card: left: 50%, so base transform is -50% (centre the card)
+  // Then shift by offset * STEP vw
+  const tx = `calc(-50% + ${offset * STEP}vw)`;
+  const scale = offset === 0 ? 1 : 0.82;
+  return `translateX(${tx}) scale(${scale})`;
+}
 
 export default function HeroMobile({ locations }: HeroMobileProps) {
-  const [active, setActive] = useState(0);
+  // Start at the middle card (index 1)
+  const [active, setActive] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
 
   const goTo = useCallback(
@@ -34,148 +41,165 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
     onSwiped: () => setIsDragging(false),
     trackMouse: true,
     preventScrollOnSwipe: true,
-    delta: 10,
+    delta: 12,
   });
 
-  // translateX = peek offset - (active card index × card step)
-  const trackTranslate = `calc(${PEEK_VW}vw - ${active} * (${CARD_VW}vw + ${GAP_PX}px))`;
-
   return (
-    <section className="flex md:hidden flex-col w-full bg-black select-none pt-8 pb-4 min-h-screen justify-center">
-      {/* Carousel viewport */}
+    <section
+      className="flex md:hidden flex-col w-full bg-black select-none"
+      style={{ minHeight: "100svh", justifyContent: "center", paddingTop: "24px", paddingBottom: "16px" }}
+    >
+      {/* Carousel — overflow hidden clips the side cards */}
       <div
         {...handlers}
-        className="w-full overflow-hidden"
-        style={{ height: "76vh" }}
+        style={{ position: "relative", width: "100%", height: CARD_H, overflow: "hidden" }}
       >
-        {/* Sliding track */}
-        <div
-          className={isDragging ? "" : "transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"}
-          style={{
-            display: "flex",
-            gap: `${GAP_PX}px`,
-            height: "76vh",
-            transform: `translateX(${trackTranslate})`,
-            willChange: "transform",
-          }}
-        >
-          {locations.map((location, index) => {
-            const isActive = index === active;
-            return (
+        {locations.map((location, index) => {
+          const offset = index - active;
+          const isCenter = offset === 0;
+          const isVisible = Math.abs(offset) <= 1;
+
+          return (
+            <div
+              key={location.id}
+              onClick={() => !isCenter && goTo(index)}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                width: `${CARD_W}vw`,
+                height: CARD_H,
+                borderRadius: "24px",
+                overflow: "hidden",
+                cursor: isCenter ? "default" : "pointer",
+                zIndex: isCenter ? 10 : 5,
+                opacity: isVisible ? 1 : 0,
+                pointerEvents: isVisible ? "auto" : "none",
+                transition: isDragging
+                  ? "none"
+                  : "transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, filter 0.4s ease",
+                transform: getTransform(offset),
+                filter: isCenter ? "brightness(1)" : "brightness(0.5)",
+                willChange: "transform",
+              }}
+            >
+              {/* Background image */}
+              <Image
+                src={location.imageUrl}
+                alt={`${location.name} — YĀTRĀ SPA`}
+                fill
+                priority={index === 1}
+                className="object-cover object-center"
+                sizes="72vw"
+              />
+
+              {/* Gradient overlay */}
               <div
-                key={location.id}
-                onClick={() => !isActive && goTo(index)}
                 style={{
-                  position: "relative",
-                  width: `${CARD_VW}vw`,
-                  height: "76vh",
-                  flexShrink: 0,
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                  cursor: isActive ? "default" : "pointer",
-                  transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.5s ease",
-                  transform: isActive ? "scale(1)" : "scale(0.95)",
-                  filter: isActive ? "brightness(1)" : "brightness(0.55)",
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.82) 100%)",
+                }}
+              />
+
+              {/* Content */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingBottom: "36px",
+                  paddingLeft: "20px",
+                  paddingRight: "20px",
+                  textAlign: "center",
                 }}
               >
-                {/* Spa image */}
-                <Image
-                  src={location.imageUrl}
-                  alt={`${location.name} — YĀTRĀ SPA`}
-                  fill
-                  priority={index === 0}
-                  className="object-cover object-center"
-                  sizes="82vw"
-                />
-
-                {/* Bottom-heavy gradient */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.18) 45%, rgba(0,0,0,0.78) 100%)",
-                  }}
-                />
-
-                {/* Content — bottom section */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    paddingBottom: "40px",
-                    paddingLeft: "24px",
-                    paddingRight: "24px",
-                    textAlign: "center",
-                  }}
+                <p
+                  className="font-cormorant text-white uppercase font-light"
+                  style={{ fontSize: "36px", letterSpacing: "0.25em", lineHeight: 1 }}
                 >
-                  {/* Brand name */}
-                  <p className="font-cormorant text-white uppercase font-light leading-none"
-                     style={{ fontSize: "38px", letterSpacing: "0.25em" }}>
-                    YĀTRĀ
-                  </p>
-                  <p className="font-cormorant text-white uppercase font-light leading-none mt-1"
-                     style={{ fontSize: "13px", letterSpacing: "0.55em" }}>
-                    SPA
-                  </p>
+                  YĀTRĀ
+                </p>
+                <p
+                  className="font-cormorant text-white uppercase font-light"
+                  style={{ fontSize: "12px", letterSpacing: "0.55em", lineHeight: 1, marginTop: "4px" }}
+                >
+                  SPA
+                </p>
 
-                  {/* Gold rule */}
-                  <div style={{ width: "28px", height: "1px", background: "rgba(201,168,76,0.75)", margin: "14px 0" }} />
+                {/* Gold rule */}
+                <div
+                  style={{
+                    width: "26px",
+                    height: "1px",
+                    background: "rgba(201,168,76,0.75)",
+                    margin: "12px 0",
+                  }}
+                />
 
-                  {/* Location */}
-                  <p className="font-inter text-white/70 font-light uppercase"
-                     style={{ fontSize: "10px", letterSpacing: "0.26em", marginBottom: "24px" }}>
-                    {location.name}
-                  </p>
+                {/* Location */}
+                <p
+                  className="font-inter text-white/65 font-light uppercase"
+                  style={{ fontSize: "10px", letterSpacing: "0.25em", marginBottom: "22px" }}
+                >
+                  {location.name}
+                </p>
 
-                  {/* Buttons */}
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <a
-                      href={location.bookUrl}
-                      className="font-inter font-medium"
-                      style={{
-                        padding: "10px 24px",
-                        borderRadius: "12px",
-                        fontSize: "13px",
-                        letterSpacing: "0.05em",
-                        background: "#C9A84C",
-                        color: "rgba(0,0,0,0.88)",
-                        whiteSpace: "nowrap",
-                        textDecoration: "none",
-                      }}
-                    >
-                      Book Now
-                    </a>
-                    <a
-                      href={location.contactUrl}
-                      className="font-inter font-medium"
-                      style={{
-                        padding: "10px 24px",
-                        borderRadius: "12px",
-                        fontSize: "13px",
-                        letterSpacing: "0.05em",
-                        border: "1px solid rgba(255,255,255,0.55)",
-                        color: "rgba(255,255,255,0.9)",
-                        whiteSpace: "nowrap",
-                        textDecoration: "none",
-                      }}
-                    >
-                      Contact Us
-                    </a>
-                  </div>
+                {/* Buttons */}
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <a
+                    href={location.bookUrl}
+                    className="font-inter font-medium"
+                    style={{
+                      padding: "9px 20px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      letterSpacing: "0.04em",
+                      background: "#C9A84C",
+                      color: "rgba(0,0,0,0.88)",
+                      whiteSpace: "nowrap",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Book Now
+                  </a>
+                  <a
+                    href={location.contactUrl}
+                    className="font-inter font-medium"
+                    style={{
+                      padding: "9px 20px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      letterSpacing: "0.04em",
+                      border: "1px solid rgba(255,255,255,0.5)",
+                      color: "rgba(255,255,255,0.88)",
+                      whiteSpace: "nowrap",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Contact Us
+                  </a>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Dot indicators */}
-      <div className="flex items-center justify-center gap-2.5 mt-6">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+          marginTop: "20px",
+        }}
+      >
         {locations.map((_, index) => (
           <button
             key={index}
@@ -183,13 +207,13 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
             aria-label={locations[index].name}
             style={{
               borderRadius: "999px",
-              transition: "all 0.3s ease",
-              background: index === active ? "#C9A84C" : "rgba(255,255,255,0.25)",
-              width: index === active ? "20px" : "8px",
-              height: "8px",
               border: "none",
               cursor: "pointer",
               padding: 0,
+              transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
+              background: index === active ? "#C9A84C" : "rgba(255,255,255,0.22)",
+              width: index === active ? "22px" : "8px",
+              height: "8px",
             }}
           />
         ))}
