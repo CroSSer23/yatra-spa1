@@ -77,16 +77,6 @@ body {
   opacity: 0;
 }
 
-/* Scroll indicator bounce */
-@keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50%       { transform: translateX(-50%) translateY(5px); }
-}
-
-.scroll-indicator {
-  animation: scrollBounce 2.2s ease-in-out infinite;
-}
-
 /* Focus-visible for carousel dots and buttons */
 button:focus-visible {
   outline: 2px solid rgba(209, 199, 191, 0.8);

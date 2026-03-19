@@ -166,32 +166,11 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
             style={{
               borderRadius: "999px", border: "none", cursor: "pointer", padding: 0,
               transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
-              background: index === active ? BEIGE : "rgba(209,199,191,0.3)",
+              background: index === active ? BLUE : "rgba(50,67,84,0.35)",
               width: index === active ? "22px" : "8px", height: "8px",
             }} />
         ))}
       </div>
-
-      {/* Scroll indicator */}
-      <button
-        onClick={() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" })}
-        aria-label="Scroll to locations"
-        className="scroll-indicator"
-        style={{
-          position: "absolute", bottom: "28px", left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 15, background: "none", border: "none", cursor: "pointer",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
-          padding: "8px",
-        }}
-      >
-        <span className="font-nunito" style={{ fontSize: "9px", letterSpacing: "0.35em", color: "rgba(239,240,241,0.55)", textTransform: "uppercase" }}>
-          Scroll
-        </span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(239,240,241,0.55)" strokeWidth="1.5" strokeLinecap="round">
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </button>
 
       {/* Bottom fade → About section — z-index 2 so it stays behind cards */}
       <div style={{
