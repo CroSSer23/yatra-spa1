@@ -6,7 +6,7 @@ import { BLUE, BEIGE, OFF_WHITE, getCarouselTransform } from "@/lib/carousel";
 import { useCarousel } from "@/hooks/useCarousel";
 
 const CARD_W   = 38;  // vw
-const STEP     = 40;  // vw
+const STEP     = 36;  // vw
 const LOGO_URL = "https://images.giftpro.co.uk/original/750x200/76c02d79-54e2-4e2a-a61c-9ae2b4ff49ae.png";
 
 // Brand Book: deep blue overlay instead of pure black
@@ -123,6 +123,15 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                       background: BLUE, color: "#EFF0F1",
                       whiteSpace: "nowrap", textDecoration: "none",
                       textTransform: "uppercase",
+                      transition: "background 0.25s ease, box-shadow 0.25s ease",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = "#3d5572";
+                      e.currentTarget.style.boxShadow = "0 4px 20px rgba(50,67,84,0.45)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = BLUE;
+                      e.currentTarget.style.boxShadow = "none";
                     }}>
                     Book Now
                   </a>
@@ -137,6 +146,15 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                       color: "#EFF0F1", whiteSpace: "nowrap",
                       background: "transparent", cursor: "pointer",
                       textTransform: "uppercase",
+                      transition: "background 0.25s ease, border-color 0.25s ease",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                      e.currentTarget.style.borderColor = "rgba(225,225,223,0.9)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.borderColor = "rgba(225,225,223,0.55)";
                     }}>
                     Contact Us
                   </button>
