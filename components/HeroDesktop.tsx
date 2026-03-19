@@ -68,17 +68,21 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
               style={{
                 position: "absolute", top: 0, left: "50%",
                 width: `${CARD_W}vw`, height: "100%",
-                borderRadius: "24px", overflow: "hidden",
+                borderRadius: "24px",
                 cursor: isCenter ? "default" : "pointer",
                 zIndex: isCenter ? 10 : 5,
                 opacity: isVisible ? 1 : 0,
                 pointerEvents: isVisible ? "auto" : "none",
-                transition: isDragging ? "none" : "transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, filter 0.4s ease",
+                transition: isDragging ? "none" : "transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, filter 0.4s ease, box-shadow 0.4s ease",
                 transform: getCarouselTransform(offset, STEP),
                 filter: isCenter ? "brightness(1)" : "brightness(0.4)",
                 willChange: isVisible ? "transform" : "auto",
+                boxShadow: isCenter
+                  ? "0 24px 60px rgba(20,30,40,0.55), 0 8px 24px rgba(20,30,40,0.3)"
+                  : "0 12px 32px rgba(20,30,40,0.3)",
               }}
             >
+            <div style={{ width: "100%", height: "100%", borderRadius: "24px", overflow: "hidden" }}>
               <Image src={location.imageUrl} alt={`${location.name} — YĀTRĀ SPA`}
                 fill priority={index === 1} className="object-cover object-center pointer-events-none"
                 sizes="38vw" draggable={false} />
@@ -161,6 +165,7 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                 </div>
               </div>
             </div>
+          </div>
           );
         })}
       </div>
