@@ -36,7 +36,9 @@ export default function MobileHeader() {
         priority
         style={{
           objectFit: "contain",
-          filter: scrolled ? "brightness(0)" : "brightness(0) invert(1)",
+          filter: scrolled
+            ? "brightness(0)"
+            : "brightness(0) invert(1) drop-shadow(0 2px 10px rgba(0,0,0,0.55))",
           transition: "filter 0.45s ease",
         }}
       />
