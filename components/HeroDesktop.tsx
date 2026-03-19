@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Location } from "@/data/locations";
-import { BLUE, BEIGE, CREAM, getCarouselTransform } from "@/lib/carousel";
+import { BLUE, BEIGE, OFF_WHITE, getCarouselTransform } from "@/lib/carousel";
 import { useCarousel } from "@/hooks/useCarousel";
 
 const CARD_W   = 38;  // vw
@@ -162,8 +162,8 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
 
       {/* Bottom fade → About section — z-index 2 so it stays behind cards */}
       <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: "60px", zIndex: 2,
-        background: `linear-gradient(to bottom, transparent 0%, ${CREAM} 100%)`,
+        position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", zIndex: 2,
+        background: `linear-gradient(to bottom, transparent 0%, ${OFF_WHITE} 100%)`,
         pointerEvents: "none",
       }} />
     </section>

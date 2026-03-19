@@ -10,7 +10,9 @@ html {
 .font-gotu {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  text-rendering: geometricPrecision;
+  font-synthesis: none;
+  font-variant-ligatures: none;
 }
 
 * {
