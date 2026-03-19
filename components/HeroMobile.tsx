@@ -7,6 +7,7 @@ import { useCarousel } from "@/hooks/useCarousel";
 
 const CARD_W   = 72;  // vw
 const STEP     = 54;  // vw
+const LOGO_URL = "https://images.giftpro.co.uk/original/750x200/76c02d79-54e2-4e2a-a61c-9ae2b4ff49ae.png";
 
 const BG_OVERLAY = "rgba(50,67,84,0.58)";
 const CARD_GRAD  = "linear-gradient(to bottom, rgba(50,67,84,0.0) 0%, rgba(50,67,84,0.18) 45%, rgba(30,41,52,0.9) 100%)";
@@ -20,19 +21,12 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
       className="flex md:hidden flex-col w-full relative overflow-hidden select-none"
       style={{
         height: "100svh",
-        paddingTop: "68px",  // 56px fixed header + 12px gap
+        paddingTop: "24px",
         paddingBottom: "16px",
         touchAction: "pan-y",
         userSelect: "none",
       }}
     >
-      {/* Top vignette — ensures logo is always legible */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: "90px", zIndex: 12,
-        background: "linear-gradient(to bottom, rgba(20,28,38,0.55) 0%, transparent 100%)",
-        pointerEvents: "none",
-      }} />
-
       {/* Blurred brand-tinted background */}
       {locations.map((location, index) => {
         if (Math.abs(index - active) > 1) return null;
@@ -52,6 +46,12 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
           </div>
         );
       })}
+
+      {/* Logo */}
+      <div style={{ position: "relative", zIndex: 10, display: "flex", justifyContent: "center", marginBottom: "20px", flexShrink: 0 }}>
+        <Image src={LOGO_URL} alt="YĀTRĀ SPA" width={160} height={42} priority
+          style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+      </div>
 
       {/* Carousel */}
       <div style={{ position: "relative", zIndex: 10, width: "100%", flex: 1, overflow: "hidden" }}>
