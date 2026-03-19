@@ -151,6 +151,27 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
         ))}
       </div>
 
+      {/* Scroll indicator */}
+      <button
+        onClick={() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" })}
+        aria-label="Scroll to locations"
+        className="scroll-indicator"
+        style={{
+          position: "absolute", bottom: "20px", left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 15, background: "none", border: "none", cursor: "pointer",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: "3px",
+          padding: "8px",
+        }}
+      >
+        <span className="font-nunito" style={{ fontSize: "8px", letterSpacing: "0.35em", color: "rgba(239,240,241,0.5)", textTransform: "uppercase" }}>
+          Scroll
+        </span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(239,240,241,0.5)" strokeWidth="1.5" strokeLinecap="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+
       {/* Bottom fade → about section */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", zIndex: 2,

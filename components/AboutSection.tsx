@@ -88,8 +88,7 @@ export default function AboutSection({ locations }: { locations: Location[] }) {
               className="font-nunito"
               style={{ fontSize: "13px", lineHeight: 1.8, letterSpacing: "0.01em", color: `${CHARCOAL}99`, fontWeight: 300 }}
             >
-              A sanctuary of refined luxury in the heart of London. YĀTRĀ SPA offers an immersive
-              wellness journey blending ancient Eastern rituals with contemporary treatments.
+              {location.description}
             </p>
 
             {/* Contact details */}

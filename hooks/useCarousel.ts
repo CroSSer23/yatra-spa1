@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useSwipeable } from "react-swipeable";
 
 export function useCarousel(length: number, initialIndex = 1) {
@@ -13,6 +13,15 @@ export function useCarousel(length: number, initialIndex = 1) {
     (index: number) => setActive(Math.max(0, Math.min(length - 1, index))),
     [length]
   );
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft")  goTo(activeRef.current - 1);
+      if (e.key === "ArrowRight") goTo(activeRef.current + 1);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [goTo]);
 
   const handlers = useSwipeable({
     onSwipedLeft:  () => goTo(activeRef.current + 1),
