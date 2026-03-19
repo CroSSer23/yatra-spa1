@@ -29,9 +29,9 @@ export function useCarousel(length: number, initialIndex = 1) {
     onSwiping: () => setIsDragging(true),
     onSwiped:  () => setIsDragging(false),
     trackMouse: true,           // drag-to-swipe on desktop
-    touchEventOptions: { passive: false },
-    preventScrollOnSwipe: true,
-    delta: 10,                  // min px to register as swipe
+    touchEventOptions: { passive: true }, // passive=true lets browser handle vertical scroll natively
+    preventScrollOnSwipe: false,          // don't block vertical scroll on mobile
+    delta: 15,                  // min px to register as swipe
   });
 
   return { active, isDragging, goTo, handlers };
