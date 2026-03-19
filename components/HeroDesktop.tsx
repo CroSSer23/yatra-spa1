@@ -90,7 +90,7 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                     style={{ padding: "10px 26px", borderRadius: "12px", fontSize: "13px", letterSpacing: "0.04em", background: GOLD, color: "rgba(0,0,0,0.88)", whiteSpace: "nowrap", textDecoration: "none" }}>
                     Book Now
                   </a>
-                  <a href={location.contactUrl} className="font-inter font-medium"
+                  <a href="#locations" className="font-inter font-medium"
                     style={{ padding: "10px 26px", borderRadius: "12px", fontSize: "13px", letterSpacing: "0.04em", border: "1px solid rgba(255,255,255,0.5)", color: "rgba(255,255,255,0.88)", whiteSpace: "nowrap", textDecoration: "none" }}>
                     Contact Us
                   </a>

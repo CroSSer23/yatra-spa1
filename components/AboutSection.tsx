@@ -23,7 +23,7 @@ const MAIL_ICON = (
 
 export default function AboutSection({ locations }: { locations: Location[] }) {
   return (
-    <section style={{ background: "#0d0d0d", padding: "80px 0 72px", position: "relative", zIndex: 10 }}>
+    <section id="locations" style={{ background: "#0d0d0d", padding: "60px 0 64px", position: "relative", zIndex: 10 }}>
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: "64px" }}>
         <p className="font-cormorant uppercase font-light"
@@ -37,17 +37,20 @@ export default function AboutSection({ locations }: { locations: Location[] }) {
         <div style={{ width: "48px", height: "1px", background: GOLD, margin: "20px auto 0" }} />
       </div>
 
-      {/* 3 columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3"
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      {/* 3 columns on desktop / stacked cards on mobile */}
+      <div
+        className="grid grid-cols-1 md:grid-cols-3"
+        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}
+      >
         {locations.map((location, index) => (
           <div
             key={location.id}
-            style={{
-              padding: "0 40px",
-              borderLeft: index > 0 ? `1px solid ${GOLD}33` : "none",
-              display: "flex", flexDirection: "column", gap: "20px",
-            }}
+            className={`flex flex-col gap-5 py-10 px-2 md:px-10 md:py-0 ${
+              index > 0
+                ? "border-t border-white/10 md:border-t-0 md:border-l"
+                : ""
+            }`}
+            style={index > 0 ? { borderColor: `${GOLD}30` } : undefined}
           >
             {/* Location name */}
             <div>
