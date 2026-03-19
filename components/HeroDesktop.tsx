@@ -68,21 +68,17 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
               style={{
                 position: "absolute", top: 0, left: "50%",
                 width: `${CARD_W}vw`, height: "100%",
-                borderRadius: "24px",
+                borderRadius: "24px", overflow: "hidden",
                 cursor: isCenter ? "default" : "pointer",
                 zIndex: isCenter ? 10 : 5,
                 opacity: isVisible ? 1 : 0,
                 pointerEvents: isVisible ? "auto" : "none",
-                transition: isDragging ? "none" : "transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, filter 0.4s ease, box-shadow 0.4s ease",
+                transition: isDragging ? "none" : "transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, filter 0.4s ease",
                 transform: getCarouselTransform(offset, STEP),
                 filter: isCenter ? "brightness(1)" : "brightness(0.4)",
                 willChange: isVisible ? "transform" : "auto",
-                boxShadow: isCenter
-                  ? "0 24px 60px rgba(20,30,40,0.55), 0 8px 24px rgba(20,30,40,0.3)"
-                  : "0 12px 32px rgba(20,30,40,0.3)",
               }}
             >
-            <div style={{ width: "100%", height: "100%", borderRadius: "24px", overflow: "hidden" }}>
               <Image src={location.imageUrl} alt={`${location.name} — YĀTRĀ SPA`}
                 fill priority={index === 1} className="object-cover object-center pointer-events-none"
                 sizes="38vw" draggable={false} />
@@ -98,28 +94,23 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                 paddingBottom: "44px", paddingLeft: "24px", paddingRight: "24px",
                 textAlign: "center",
               }}>
-                {/* YĀTRĀ wordmark on card */}
                 <p className="font-gotu text-white uppercase"
                   style={{ fontSize: "30px", letterSpacing: "0.3em", lineHeight: 1 }}>
                   YATRA
                 </p>
-                {/* Spa type per Brand Book: "URBAN SPA" or "SIGNATURE SPA" */}
                 <p className="font-nunito text-white/70 uppercase"
                   style={{ fontSize: "10px", letterSpacing: "0.55em", lineHeight: 1, marginTop: "6px", fontWeight: 300 }}>
                   {location.spaType}
                 </p>
 
-                {/* Brand beige divider */}
                 <div style={{ width: "28px", height: "1px", background: BEIGE, margin: "14px 0", opacity: 0.75 }} />
 
-                {/* Location name */}
                 <p className="font-nunito text-white/75 uppercase"
                   style={{ fontSize: "11px", letterSpacing: "0.28em", marginBottom: "26px", fontWeight: 300 }}>
                   {location.name}
                 </p>
 
                 <div style={{ display: "flex", gap: "12px" }}>
-                  {/* Book Now — Brand Book deep blue */}
                   <a href={location.bookUrl} className="font-nunito"
                     style={{
                       padding: "10px 26px", borderRadius: "10px",
@@ -139,7 +130,6 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                     }}>
                     Book Now
                   </a>
-                  {/* Contact Us — ghost */}
                   <button
                     onClick={() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" })}
                     className="font-nunito"
@@ -165,7 +155,6 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                 </div>
               </div>
             </div>
-          </div>
           );
         })}
       </div>
