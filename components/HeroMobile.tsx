@@ -9,21 +9,17 @@ interface HeroMobileProps {
   locations: Location[];
 }
 
-// Layout constants
-const CARD_W = 72;   // vw — card width
-const STEP = 54;     // vw — horizontal distance between card centres
+const CARD_W = 72;
+const STEP = 54;
 const CARD_H = "76vh";
 
 function getTransform(offset: number) {
-  // Each card: left: 50%, so base transform is -50% (centre the card)
-  // Then shift by offset * STEP vw
   const tx = `calc(-50% + ${offset * STEP}vw)`;
   const scale = offset === 0 ? 1 : 0.82;
   return `translateX(${tx}) scale(${scale})`;
 }
 
 export default function HeroMobile({ locations }: HeroMobileProps) {
-  // Start at the middle card (index 1)
   const [active, setActive] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -46,13 +42,67 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
 
   return (
     <section
-      className="flex md:hidden flex-col w-full bg-black select-none"
-      style={{ minHeight: "100svh", justifyContent: "center", paddingTop: "24px", paddingBottom: "16px" }}
+      className="flex md:hidden flex-col w-full select-none relative"
+      style={{ minHeight: "100svh", justifyContent: "center", paddingTop: "24px", paddingBottom: "16px", overflow: "hidden" }}
     >
-      {/* Carousel — overflow hidden clips the side cards */}
+      {/* Blurred background — active card image */}
+      {locations.map((location, index) => (
+        <div
+          key={location.id}
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 0,
+            transition: "opacity 0.7s ease",
+            opacity: index === active ? 1 : 0,
+          }}
+        >
+          <Image
+            src={location.imageUrl}
+            alt=""
+            fill
+            priority={index === 1}
+            className="object-cover object-center"
+            sizes="100vw"
+            aria-hidden
+          />
+          {/* Dark + blur overlay */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backdropFilter: "blur(32px)",
+              WebkitBackdropFilter: "blur(32px)",
+              background: "rgba(0,0,0,0.55)",
+            }}
+          />
+        </div>
+      ))}
+
+      {/* White logo at top */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <Image
+          src="https://images.giftpro.co.uk/original/750x200/76c02d79-54e2-4e2a-a61c-9ae2b4ff49ae.png"
+          alt="YĀTRĀ SPA"
+          width={160}
+          height={42}
+          priority
+          style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+        />
+      </div>
+
+      {/* Carousel */}
       <div
         {...handlers}
-        style={{ position: "relative", width: "100%", height: CARD_H, overflow: "hidden" }}
+        style={{ position: "relative", zIndex: 10, width: "100%", height: CARD_H, overflow: "hidden" }}
       >
         {locations.map((location, index) => {
           const offset = index - active;
@@ -83,7 +133,6 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
                 willChange: "transform",
               }}
             >
-              {/* Background image */}
               <Image
                 src={location.imageUrl}
                 alt={`${location.name} — YĀTRĀ SPA`}
@@ -131,17 +180,8 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
                   SPA
                 </p>
 
-                {/* Gold rule */}
-                <div
-                  style={{
-                    width: "26px",
-                    height: "1px",
-                    background: "rgba(201,168,76,0.75)",
-                    margin: "12px 0",
-                  }}
-                />
+                <div style={{ width: "26px", height: "1px", background: "rgba(201,168,76,0.75)", margin: "12px 0" }} />
 
-                {/* Location */}
                 <p
                   className="font-inter text-white/65 font-light uppercase"
                   style={{ fontSize: "10px", letterSpacing: "0.25em", marginBottom: "22px" }}
@@ -149,7 +189,6 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
                   {location.name}
                 </p>
 
-                {/* Buttons */}
                 <div style={{ display: "flex", gap: "10px" }}>
                   <a
                     href={location.bookUrl}
@@ -193,6 +232,8 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
       {/* Dot indicators */}
       <div
         style={{
+          position: "relative",
+          zIndex: 10,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -211,7 +252,7 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
               cursor: "pointer",
               padding: 0,
               transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
-              background: index === active ? "#C9A84C" : "rgba(255,255,255,0.22)",
+              background: index === active ? "#C9A84C" : "rgba(255,255,255,0.3)",
               width: index === active ? "22px" : "8px",
               height: "8px",
             }}
