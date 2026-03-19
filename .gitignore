@@ -18,10 +18,17 @@
 
 # misc
 .DS_Store
-.claude
 *.pem
+
+# AI / editor tooling
+.claude
 .agents
 .agent
+.vexp
+.cursor
+.windsurf
+.idea
+.vscode
 
 # brand assets — large files, do not commit
 *.pdf
