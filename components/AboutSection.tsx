@@ -47,7 +47,7 @@ export default function AboutSection({ locations }: { locations: Location[] }) {
           className="font-gotu uppercase"
           style={{ fontSize: "clamp(28px, 4vw, 48px)", letterSpacing: "0.18em", lineHeight: 1.1, color: CHARCOAL }}
         >
-          About Yātrā Spa
+          About Yatra Spa
         </h2>
         {/* Brand beige divider */}
         <div style={{ width: "48px", height: "1px", background: BEIGE, margin: "20px auto 0" }} />
@@ -163,7 +163,7 @@ export default function AboutSection({ locations }: { locations: Location[] }) {
           className="font-nunito uppercase"
           style={{ fontSize: "11px", letterSpacing: "0.2em", textAlign: "center", marginTop: "24px", color: `${CHARCOAL}55`, fontWeight: 300 }}
         >
-          YĀTRĀ Spa by Montcalm · © {new Date().getFullYear()}
+          YATRA Spa by Montcalm · © {new Date().getFullYear()}
         </p>
       </div>
     </section>

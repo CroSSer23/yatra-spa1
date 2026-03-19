@@ -6,8 +6,6 @@ export const BEIGE     = "#D1C7BF";   // warm beige divider
 export const CREAM     = "#E2E1DF";   // primary background
 export const OFF_WHITE = "#EFF0F1";   // secondary background
 
-/** @deprecated use named brand tokens above */
-export const GOLD = TERRA;
 
 export function getCarouselTransform(offset: number, step: number): string {
   const tx = `calc(-50% + ${offset * step}vw)`;

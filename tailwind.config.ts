@@ -13,9 +13,6 @@ const config: Config = {
         gotu: ["var(--font-gotu)", "Georgia", "serif"],
         // YĀTRĀ Brand Book — Secondary: Avenir equivalent
         nunito: ["var(--font-nunito)", "system-ui", "sans-serif"],
-        // Keep aliases for backward compat with existing JSX
-        cormorant: ["var(--font-gotu)", "Georgia", "serif"],
-        inter: ["var(--font-nunito)", "system-ui", "sans-serif"],
       },
       colors: {
         // YĀTRĀ Brand Book — Primary palette

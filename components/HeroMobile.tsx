@@ -93,7 +93,7 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
               }}>
                 <p className="font-gotu text-white uppercase"
                   style={{ fontSize: "34px", letterSpacing: "0.28em", lineHeight: 1 }}>
-                  YĀTRĀ
+                  YATRA
                 </p>
                 <p className="font-nunito text-white/70 uppercase"
                   style={{ fontSize: "9px", letterSpacing: "0.55em", lineHeight: 1, marginTop: "5px", fontWeight: 300 }}>

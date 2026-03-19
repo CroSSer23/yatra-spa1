@@ -97,7 +97,7 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                 {/* YĀTRĀ wordmark on card */}
                 <p className="font-gotu text-white uppercase"
                   style={{ fontSize: "30px", letterSpacing: "0.3em", lineHeight: 1 }}>
-                  YĀTRĀ
+                  YATRA
                 </p>
                 {/* Spa type per Brand Book: "URBAN SPA" or "SIGNATURE SPA" */}
                 <p className="font-nunito text-white/70 uppercase"

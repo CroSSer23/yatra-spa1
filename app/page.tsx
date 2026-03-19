@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import locations from "@/data/locations";
 import HeroDesktop from "@/components/HeroDesktop";
 import HeroMobile from "@/components/HeroMobile";
