@@ -11,7 +11,7 @@ const locations: Location[] = [
     id: 1,
     name: "Montcalm East",
     imageUrl:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1400&q=85&fit=crop",
+      "https://images.ctfassets.net/bu3up4ijy7vs/9uM2ObiC48pjtsa8liEHy/fb151118934e7a155f272bfd7798f574/0272_new.jpg?w=2400&h=1372&fit=fill&fm=avif&q=50",
     bookUrl: "#book-montcalm",
     contactUrl: "#contact-montcalm",
   },
@@ -19,7 +19,7 @@ const locations: Location[] = [
     id: 2,
     name: "Royal London House",
     imageUrl:
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1400&q=85&fit=crop",
+      "https://images.ctfassets.net/bu3up4ijy7vs/1HHMl3VX5kcvfZiSGYBG9y/8cf177d393f31cf974d258046ffcf444/CD1_4550-Edit.jpg?w=2400&h=1372&fit=fill&fm=avif&q=50",
     bookUrl: "#book-royal",
     contactUrl: "#contact-royal",
   },
@@ -27,7 +27,7 @@ const locations: Location[] = [
     id: 3,
     name: "Mayfair",
     imageUrl:
-      "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=1400&q=85&fit=crop",
+      "https://images.ctfassets.net/bu3up4ijy7vs/38ApIAivzJjB6zXf3ibxTo/a1bfe17056922b3f64cb20baebc6d2dc/Mayfair_Relaxation_Area.jpg?w=2400&h=1372&fit=fill&fm=avif&q=50",
     bookUrl: "#book-mayfair",
     contactUrl: "#contact-mayfair",
   },

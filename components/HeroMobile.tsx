@@ -9,9 +9,11 @@ interface HeroMobileProps {
   locations: Location[];
 }
 
+const CARD_HEIGHT = "88vh";
+
 export default function HeroMobile({ locations }: HeroMobileProps) {
   const [active, setActive] = useState(0);
-  const [dragging, setDragging] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const goTo = useCallback(
     (index: number) => {
@@ -23,27 +25,29 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
   const handlers = useSwipeable({
     onSwipedLeft: () => goTo(active + 1),
     onSwipedRight: () => goTo(active - 1),
-    onSwiping: () => setDragging(true),
-    onSwiped: () => setDragging(false),
+    onSwiping: () => setIsDragging(true),
+    onSwiped: () => setIsDragging(false),
     trackMouse: true,
     preventScrollOnSwipe: true,
     delta: 10,
   });
 
   return (
-    <section className="flex md:hidden flex-col w-full min-h-screen bg-black select-none">
-      {/* Carousel viewport */}
+    <section className="flex md:hidden flex-col w-full bg-black select-none">
+      {/* Carousel viewport — explicit height so next/image fill works */}
       <div
         {...handlers}
-        className="relative w-full overflow-hidden flex-1"
-        style={{ minHeight: "88vh" }}
+        className="relative w-full overflow-hidden"
+        style={{ height: CARD_HEIGHT }}
       >
         {/* Sliding track */}
         <div
-          className={`flex h-full ${dragging ? "" : "transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"}`}
+          className={isDragging ? "" : "transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"}
           style={{
-            transform: `translateX(-${active * 100}%)`,
-            width: `${locations.length * 100}%`,
+            display: "flex",
+            height: CARD_HEIGHT,
+            width: `${locations.length * 100}vw`,
+            transform: `translateX(-${active * 100}vw)`,
             willChange: "transform",
           }}
         >
@@ -52,8 +56,7 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
             return (
               <div
                 key={location.id}
-                className="relative h-full flex-shrink-0"
-                style={{ width: `${100 / locations.length}%` }}
+                style={{ position: "relative", width: "100vw", height: CARD_HEIGHT, flexShrink: 0 }}
               >
                 {/* Spa image */}
                 <Image
@@ -65,22 +68,20 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
                     isActive ? "scale-100 brightness-100" : "scale-105 brightness-75"
                   }`}
                   sizes="100vw"
+                  unoptimized={false}
                 />
 
                 {/* Bottom-heavy gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/25 to-black/75" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/20 to-black/80" />
 
-                {/* Vignette */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_50%,_rgba(0,0,0,0.3)_100%)]" />
-
-                {/* Content — lower third */}
-                <div className="absolute inset-0 flex flex-col items-center justify-end pb-14 px-8 text-center">
-                  {/* Brand name — two lines */}
+                {/* Content — bottom quarter */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 px-8 text-center">
+                  {/* Brand name */}
                   <div className="flex flex-col items-center gap-1 mb-3">
                     <p className="font-cormorant text-white uppercase tracking-[0.3em] text-[42px] leading-none font-light">
                       YĀTRĀ
                     </p>
-                    <p className="font-cormorant text-white uppercase tracking-[0.6em] text-[16px] leading-none font-light">
+                    <p className="font-cormorant text-white uppercase tracking-[0.6em] text-[15px] leading-none font-light">
                       SPA
                     </p>
                   </div>
@@ -97,27 +98,13 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
                   <div className="flex gap-3">
                     <a
                       href={location.bookUrl}
-                      className="
-                        px-7 py-2.5 rounded-xl text-[13px] font-medium font-inter
-                        bg-[#C9A84C] text-black/90
-                        hover:bg-[#debb63] active:bg-[#debb63]
-                        hover:shadow-[0_0_24px_rgba(201,168,76,0.45)]
-                        transition-all duration-300
-                        whitespace-nowrap tracking-wide
-                      "
+                      className="px-7 py-2.5 rounded-xl text-[13px] font-medium font-inter bg-[#C9A84C] text-black/90 hover:bg-[#debb63] active:bg-[#debb63] transition-all duration-300 whitespace-nowrap tracking-wide"
                     >
                       Book Now
                     </a>
                     <a
                       href={location.contactUrl}
-                      className="
-                        px-7 py-2.5 rounded-xl text-[13px] font-medium font-inter
-                        border border-white/60 text-white/90
-                        hover:bg-white hover:text-black hover:border-white
-                        active:bg-white active:text-black
-                        transition-all duration-300
-                        whitespace-nowrap tracking-wide
-                      "
+                      className="px-7 py-2.5 rounded-xl text-[13px] font-medium font-inter border border-white/60 text-white/90 hover:bg-white hover:text-black active:bg-white active:text-black transition-all duration-300 whitespace-nowrap tracking-wide"
                     >
                       Contact Us
                     </a>
@@ -135,11 +122,11 @@ export default function HeroMobile({ locations }: HeroMobileProps) {
           <button
             key={index}
             onClick={() => goTo(index)}
-            aria-label={`${locations[index].name}`}
-            className={`rounded-full transition-all duration-400 ease-out ${
+            aria-label={locations[index].name}
+            className={`rounded-full transition-all duration-300 ${
               index === active
                 ? "bg-[#C9A84C] w-5 h-2"
-                : "bg-white/25 w-2 h-2 hover:bg-white/50"
+                : "bg-white/25 w-2 h-2 hover:bg-white/40"
             }`}
           />
         ))}
