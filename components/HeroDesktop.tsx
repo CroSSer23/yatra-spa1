@@ -15,8 +15,8 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
   return (
     <section
       {...handlers}
-      className="hidden md:flex flex-col w-full relative overflow-hidden"
-      style={{ height: "100svh", paddingTop: "32px", paddingBottom: "24px", cursor: isDragging ? "grabbing" : "grab" }}
+      className="hidden md:flex flex-col w-full relative overflow-hidden select-none"
+      style={{ height: "100svh", paddingTop: "32px", paddingBottom: "24px", cursor: isDragging ? "grabbing" : "grab", userSelect: "none" }}
     >
       {/* Blurred background — only render active + adjacent to limit GPU work */}
       {locations.map((location, index) => {
@@ -76,7 +76,7 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
               }}
             >
               <Image src={location.imageUrl} alt={`${location.name} — YĀTRĀ SPA`}
-                fill priority={index === 1} className="object-cover object-center" sizes="38vw" />
+                fill priority={index === 1} className="object-cover object-center pointer-events-none" sizes="38vw" draggable={false} />
 
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.82) 100%)" }} />
 

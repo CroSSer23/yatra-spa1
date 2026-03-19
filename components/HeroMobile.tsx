@@ -16,7 +16,7 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
     <section
       {...handlers}
       className="flex md:hidden flex-col w-full relative overflow-hidden select-none"
-      style={{ height: "100svh", paddingTop: "24px", paddingBottom: "16px", touchAction: "pan-y" }}
+      style={{ height: "100svh", paddingTop: "24px", paddingBottom: "16px", touchAction: "pan-y", userSelect: "none" }}
     >
       {/* Blurred background — only render active + adjacent */}
       {locations.map((location, index) => {
@@ -76,7 +76,7 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
               }}
             >
               <Image src={location.imageUrl} alt={`${location.name} — YĀTRĀ SPA`}
-                fill priority={index === 1} className="object-cover object-center" sizes="72vw" />
+                fill priority={index === 1} className="object-cover object-center pointer-events-none" sizes="72vw" draggable={false} />
 
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.82) 100%)" }} />
 
