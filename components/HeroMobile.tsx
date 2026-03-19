@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Location } from "@/data/locations";
-import { TERRA, BEIGE, CREAM, getCarouselTransform } from "@/lib/carousel";
+import { BLUE, BEIGE, CREAM, getCarouselTransform } from "@/lib/carousel";
 import { useCarousel } from "@/hooks/useCarousel";
 
 const CARD_W   = 72;  // vw
@@ -112,7 +112,7 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
                     style={{
                       padding: "9px 20px", borderRadius: "10px",
                       fontSize: "11px", letterSpacing: "0.1em", fontWeight: 500,
-                      background: TERRA, color: "#EFF0F1",
+                      background: BLUE, color: "#EFF0F1",
                       whiteSpace: "nowrap", textDecoration: "none",
                       textTransform: "uppercase",
                     }}>
@@ -153,7 +153,7 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
 
       {/* Bottom fade → brand cream */}
       <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: "100px", zIndex: 20,
+        position: "absolute", bottom: 0, left: 0, right: 0, height: "60px", zIndex: 2,
         background: `linear-gradient(to bottom, transparent 0%, ${CREAM} 100%)`,
         pointerEvents: "none",
       }} />

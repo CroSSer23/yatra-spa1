@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Location } from "@/data/locations";
-import { TERRA, BEIGE, CREAM, getCarouselTransform } from "@/lib/carousel";
+import { BLUE, BEIGE, CREAM, getCarouselTransform } from "@/lib/carousel";
 import { useCarousel } from "@/hooks/useCarousel";
 
 const CARD_W   = 38;  // vw
@@ -115,12 +115,12 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
                 </p>
 
                 <div style={{ display: "flex", gap: "12px" }}>
-                  {/* Book Now — Brand Book terracotta accent */}
+                  {/* Book Now — Brand Book deep blue */}
                   <a href={location.bookUrl} className="font-nunito"
                     style={{
                       padding: "10px 26px", borderRadius: "10px",
                       fontSize: "12px", letterSpacing: "0.1em", fontWeight: 500,
-                      background: TERRA, color: "#EFF0F1",
+                      background: BLUE, color: "#EFF0F1",
                       whiteSpace: "nowrap", textDecoration: "none",
                       textTransform: "uppercase",
                     }}>
@@ -160,9 +160,9 @@ export default function HeroDesktop({ locations }: { locations: Location[] }) {
         ))}
       </div>
 
-      {/* Bottom fade → About section */}
+      {/* Bottom fade → About section — z-index 2 so it stays behind cards */}
       <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: "140px", zIndex: 20,
+        position: "absolute", bottom: 0, left: 0, right: 0, height: "60px", zIndex: 2,
         background: `linear-gradient(to bottom, transparent 0%, ${CREAM} 100%)`,
         pointerEvents: "none",
       }} />
