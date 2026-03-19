@@ -124,12 +124,11 @@ export default function AboutSection({ locations }: { locations: Location[] }) {
               </div>
             </div>
 
-            {/* Book Now — Brand Book terracotta accent */}
+            {/* Book Now — deep blue, mt-auto pushes to same baseline in all columns */}
             <a
               href={location.bookUrl}
-              className="font-nunito uppercase transition-all duration-200 hover:opacity-80 self-start mt-auto"
+              className="font-nunito uppercase transition-all duration-200 self-start mt-auto"
               style={{
-                marginTop: "8px",
                 padding: "11px 26px",
                 borderRadius: "10px",
                 fontSize: "11px",
@@ -164,7 +163,7 @@ export default function AboutSection({ locations }: { locations: Location[] }) {
           className="font-nunito uppercase"
           style={{ fontSize: "11px", letterSpacing: "0.2em", textAlign: "center", marginTop: "24px", color: `${CHARCOAL}55`, fontWeight: 300 }}
         >
-          YĀTRĀ Spa Royal London House by Montcalm · © {new Date().getFullYear()}
+          YĀTRĀ Spa by Montcalm · © {new Date().getFullYear()}
         </p>
       </div>
     </section>

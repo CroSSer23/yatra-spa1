@@ -4,7 +4,7 @@ import "./globals.css";
 
 // YĀTRĀ Brand Book — Primary: Gotu (echoes the organic Ayurvedic aesthetic of the logo)
 const gotu = Gotu({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],   // latin-ext includes Ā macron characters
   weight: "400",
   variable: "--font-gotu",
   display: "swap",
