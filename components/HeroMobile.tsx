@@ -14,8 +14,9 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
 
   return (
     <section
+      {...handlers}
       className="flex md:hidden flex-col w-full relative overflow-hidden select-none"
-      style={{ height: "100svh", paddingTop: "24px", paddingBottom: "16px" }}
+      style={{ height: "100svh", paddingTop: "24px", paddingBottom: "16px", touchAction: "pan-y" }}
     >
       {/* Blurred background — only render active + adjacent */}
       {locations.map((location, index) => {
@@ -49,7 +50,6 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
 
       {/* Carousel — flex:1 fills remaining height */}
       <div
-        {...handlers}
         style={{ position: "relative", zIndex: 10, width: "100%", flex: 1, overflow: "hidden" }}
       >
         {locations.map((location, index) => {
@@ -108,6 +108,13 @@ export default function HeroMobile({ locations }: { locations: Location[] }) {
             style={{ borderRadius: "999px", border: "none", cursor: "pointer", padding: 0, transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)", background: index === active ? GOLD : "rgba(255,255,255,0.25)", width: index === active ? "22px" : "8px", height: "8px" }} />
         ))}
       </div>
+
+      {/* Bottom fade — blends into About section */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0, height: "100px", zIndex: 20,
+        background: "linear-gradient(to bottom, transparent 0%, #0d0d0d 100%)",
+        pointerEvents: "none",
+      }} />
     </section>
   );
 }
