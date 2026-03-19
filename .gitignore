@@ -18,7 +18,11 @@
 
 # misc
 .DS_Store
+.claude
 *.pem
+.agents
+.agent
+
 
 # debug
 npm-debug.log*
