@@ -8,9 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        cormorant: ["var(--font-cormorant)", "Georgia", "serif"],
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        gold: "#C9A84C",
+        "gold-light": "#e0bc5a",
       },
     },
   },
